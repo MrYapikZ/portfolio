@@ -1,28 +1,31 @@
 'use client';
-import Image from "next/image";
-import { DiscordLogoIcon, FacebookLogoIcon, GithubLogoIcon, InstagramLogoIcon } from "@phosphor-icons/react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel"
+  CarouselItem
+} from "@/components/ui/carousel";
+import { DiscordLogoIcon, FacebookLogoIcon, GithubLogoIcon, InstagramLogoIcon } from "@phosphor-icons/react";
+import Image from "next/image";
+import { useLockBodyScroll } from 'react-use';
 
 export default function Home() {
+  useLockBodyScroll(true);
   return (
     <>
-      <section className="p-4 h-screen w-screen overflow-hidden bg-white">
+      <section className="p-4 h-screen w-screen overflow-hidden bg-white touch-none">
         <div className="relative w-full h-full overflow-hidden">
+          
           <Image
-            src="/background/wallhaven-1qd9o1.png"
+            src="/background/wallhaven-9dq9wk.png"
             alt="background"
             fill
             priority
-            className="object-cover"
+            className="object-cover scale-x-[-1]"
           />
           <div className="absolute inset-0 bg-white/0"></div>
+
+          
 
           <div className="relative w-full h-full border-4 border-black grid grid-cols-12 grid-rows-6">
             {/* Nav */}
@@ -31,7 +34,7 @@ export default function Home() {
                 STUPID GENERALIST
               </p>
             </div>
-            
+
             {/* Projects */}
             <div className="bg-white border-b-4 border-l-4 border-black col-start-9 col-end-13 row-start-1 row-end-3 flex flex-col items-center justify-center p-4">
               <Carousel className="w-full">
@@ -44,7 +47,7 @@ export default function Home() {
                           <img
                             src='/background/wallhaven-1qd9o1.png'
                             alt={`Project ${index + 1}`}
-                            
+
                             className="relative z-20 aspect-video h-64 w-full object-cover brightness-80 dark:brightness-40"
                           />
                           <CardHeader>
@@ -101,6 +104,17 @@ export default function Home() {
               </h1>
             </div>
           </div>
+          
+          {/* Noise Filter Overlay */}
+          <div 
+            className="fixed inset-0 pointer-events-none z-50 opacity-80"
+            style={{
+              backgroundImage: "url('/texture/100-90-100.png')",
+              backgroundRepeat: "repeat",
+              mixBlendMode: "overlay"
+            }}
+            aria-hidden="true"
+          />
         </div>
       </section >
     </>
