@@ -84,31 +84,24 @@ const CyberBackground = ({
       return parseFloat(el.dataset[key] ?? "0");
     };
 
-    animate(".cyber-frag-drift", {
-      translateX: (target: Target) => {
-        const v = readNum(target, "dx");
-        return [0, v, -v * 0.6, 0];
-      },
-      translateY: (target: Target) => {
-        const v = readNum(target, "dy");
-        return [0, v, v * 0.4, 0];
-      },
-      rotate: (target: Target) => {
-        const r0 = readNum(target, "r0");
-        const r1 = readNum(target, "r1");
-        const r2 = readNum(target, "r2");
-        return [r0, r1, r2, r0];
-      },
-      opacity: (target: Target) => {
-        const lo = readNum(target, "oplo");
-        const hi = readNum(target, "ophi");
-        return [lo, hi, lo, lo];
-      },
-      duration: (target: Target) => readNum(target, "dur"),
-      delay: (target: Target) => readNum(target, "delay"),
-      loop: false,
-      easing: "easeInOutSine",
-    });
+    const rand = (min: number, max: number) => Math.random() * (max - min) + min;
+
+    const float = (el: HTMLElement) => {
+      animate(el, {
+        translateX: rand(-30, 30),
+        translateY: rand(-30, 30),
+        rotate: rand(-20, 20),
+        opacity: (target: Target) => { const lo = readNum(target, "oplo"); const hi = readNum(target, "ophi"); return [lo, hi, lo, lo]; },
+        duration: rand(3000, 7000),
+        easing: "easeInOutSine",
+        complete: () => {
+          requestAnimationFrame(() => float(el));
+        },
+      });
+    };
+
+    document.querySelectorAll<HTMLElement>(".cyber-frag-drift")
+    .forEach((el) => float(el));
 
     animate(".cyber-frag-glitch", {
       opacity: [

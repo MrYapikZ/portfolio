@@ -82,16 +82,30 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 
-  --hero-clip: polygon(19rem 0,
-      17rem 2.5rem,
-      0 2.5rem,
-      0 calc(100% - 2rem),
-      2rem 100%,
-      calc(100% - 14rem) 100%,
-      calc(100% - 12rem) calc(100% - 2rem),
-      100% calc(100% - 2rem),
-      100% 2rem,
-      calc(100% - 2rem) 0)
+  --hero-clip: polygon(
+    19rem 0, 
+    17rem 2.5rem,
+    0 2.5rem,
+    0 calc(100% - 2rem),
+    2rem 100%,
+    calc(100% - 14rem) 100%,
+    calc(100% - 12rem) calc(100% - 2rem),
+    100% calc(100% - 2rem),
+    100% 2rem,
+    calc(100% - 2rem) 0
+  );
+
+  --window-clip: polygon(
+    0% 0%,
+    calc(100% - 2rem) 0%,
+    100% 2rem,
+    100% calc(100% - 4rem),
+    calc(100% - 2rem) calc(100% - 2rem),
+    calc(100% - 12rem) calc(100% - 2rem),
+    calc(100% - 14rem) 100%,
+    2rem 100%,
+    0% calc(100% - 2rem)
+  );
 }
 
 .dark {

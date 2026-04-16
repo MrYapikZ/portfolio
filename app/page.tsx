@@ -2,6 +2,7 @@
 import CyberBackground from "@/components/cyber-background";
 import { GlitchBackground } from "@/components/glitch-background";
 import { InteractiveGridPattern } from "@/components/interactive-grid-pattern";
+import PopUpWindow from "@/components/popup-window";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
@@ -56,7 +57,7 @@ export default function Home() {
           <div className="[clip-path:var(--hero-clip)] h-full w-full relative bg-[#F5E709]">
             {/* <InteractiveGridPattern className="absolute inset-0 -z-10" cellSize={50} glowColor="rgba(245, 231, 9, 0.1)" borderColor="rgba(245, 231, 9, 0.2)" proximity={150} /> */}
             {/* <GlitchBackground className="absolute inset-0 -z-20" color="#F5E709" intensity={0.5} /> */}
-            <CyberBackground speed={5} />
+            {/* <CyberBackground speed={5} /> */}
             {/* top info */}
             <div className="relative w-auto flex flex-row items-end justify-between ml-76 sm:ml-80 mr-8 sm:mr-12 pt-4 pb-2 border-b-2 border-black">
               <p className="hidden md:block font-heading text-sm tracking-[0.25rem]">
@@ -116,6 +117,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      {/* <PopUpWindow/> */}
     </>
   );
 }
