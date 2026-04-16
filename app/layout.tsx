@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 
 const nexusbold = localFont({ src: "./fonts/Nexusbold.ttf", variable: '--font-nexus' });
 
+const buildingstracks = localFont({src:"./fonts/Buildingsandundertherailwaytracksfree_ver.otf", variable: '--font-buildingstracks'})
+
 const urbanist = Urbanist({ subsets: ['latin'], variable: '--font-mono' });
 
 const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
@@ -33,7 +35,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-mono", jetbrainsMono.variable, nexusbold.variable, urbanist.variable)}
+      className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-mono", jetbrainsMono.variable, nexusbold.variable, buildingstracks.variable, urbanist.variable)}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
