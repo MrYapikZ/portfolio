@@ -38,97 +38,104 @@ export default function HomeDesktop() {
 
   useEffect(() => {
     const japaneseNameSplit = new SplitText(japaneseNameRef.current, { type: "chars" });
-    tl.current = gsap.timeline({
-      onComplete: () => {
-        carouselAutoplay.current.play();
-      }})
-      .from(navRef.current, {
-        x: -200,
-        duration: 1,
-        opacity: 0,
-        ease: "power3.inOut"
-      }, 1)
-      .from(navTextRef.current, {
-        x: -200,
-        duration: 1,
-        opacity: 0,
-        ease: "power3.inOut"
-      }, "<0.05")
-      .from(projectsRef.current, {
-        x: 800,
-        duration: 1,
-        opacity: 0,
-        ease: "power3.inOut"
-      }, "<")
-      .from(carouselRef.current, {
-        x: 800,
-        duration: 1,
-        opacity: 0,
-        ease: "power3.inOut"
-      }, "<0.05")
-      .from(bioRef.current, {
-        x: 800,
-        duration: 1,
-        opacity: 0,
-        ease: "power3.inOut"
-      }, "-=0.8")
-      .from(bioParagraphRef.current, {
-        x: 800,
-        duration: 1,
-        opacity: 0,
-        ease: "power3.inOut"
-      }, "-=0.85")
-      .from(contactRef.current, {
-        x: 800,
-        duration: 1,
-        opacity: 0,
-        ease: "power3.inOut"
-      }, "-=0.8")
-      .from(emailRef.current, {
-        x: 800,
-        duration: 1,
-        opacity: 0,
-        ease: "power3.inOut"
-      }, "<0.05")
-      .from(contactIconsRef.current, {
-        x: 800,
-        duration: 1,
-        opacity: 0,
-        stagger: 0.2,
-        ease: "power3.inOut"
-      }, "<0.075")
-      .from(creditRef.current, {
-        y: 200,
-        duration: 1,
-        opacity: 0,
-        ease: "power3.inOut"
-      }, "<0.125")
-      .from(artCreditRef.current, {
-        y: 200,
-        duration: 1,
-        opacity: 0,
-        ease: "power3.inOut"
-      }, "<0.125")
-      .from(japaneseNameSplit.chars, {
-        duration: 1,
-        opacity: 0,
-        y: 50,
-        stagger: 0.2,
-        ease: "power3.inOut"
-      }, "<0.5")
-      .from(nameRef.current, {
-        y: 400,
-        // x: 1600,
-        duration: 1,
-        opacity: 0,
-        ease: "power3.inOut"
-      }, "<0.05")
-      .from(nameHeadingRef.current, {
-        y: 400,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.inOut"
-      }, "<0.05");
+    let ctx = gsap.context(() => {
+      tl.current = gsap.timeline({
+        onComplete: () => {
+          carouselAutoplay.current?.play();
+        }
+      })
+        .from(navRef.current, {
+          x: -200,
+          duration: 1,
+          opacity: 0,
+          ease: "power3.inOut"
+        }, 1)
+        .from(navTextRef.current, {
+          x: -200,
+          duration: 1,
+          opacity: 0,
+          ease: "power3.inOut"
+        }, "<0.05")
+        .from(projectsRef.current, {
+          x: 800,
+          duration: 1,
+          opacity: 0,
+          ease: "power3.inOut"
+        }, "<")
+        .from(carouselRef.current, {
+          x: 800,
+          duration: 1,
+          opacity: 0,
+          ease: "power3.inOut"
+        }, "<0.05")
+        .from(bioRef.current, {
+          x: 800,
+          duration: 1,
+          opacity: 0,
+          ease: "power3.inOut"
+        }, "-=0.8")
+        .from(bioParagraphRef.current, {
+          x: 800,
+          duration: 1,
+          opacity: 0,
+          ease: "power3.inOut"
+        }, "-=0.85")
+        .from(contactRef.current, {
+          x: 800,
+          duration: 1,
+          opacity: 0,
+          ease: "power3.inOut"
+        }, "-=0.8")
+        .from(emailRef.current, {
+          x: 800,
+          duration: 1,
+          opacity: 0,
+          ease: "power3.inOut"
+        }, "<0.05")
+        .from(contactIconsRef.current, {
+          x: 800,
+          duration: 1,
+          opacity: 0,
+          stagger: 0.2,
+          ease: "power3.inOut"
+        }, "<0.075")
+        .from(creditRef.current, {
+          y: 200,
+          duration: 1,
+          opacity: 0,
+          ease: "power3.inOut"
+        }, "<0.125")
+        .from(artCreditRef.current, {
+          y: 200,
+          duration: 1,
+          opacity: 0,
+          ease: "power3.inOut"
+        }, "<0.125")
+        .from(japaneseNameSplit.chars, {
+          duration: 1,
+          opacity: 0,
+          y: 50,
+          stagger: 0.2,
+          ease: "power3.inOut"
+        }, "<0.5")
+        .from(nameRef.current, {
+          y: 400,
+          // x: 1600,
+          duration: 1,
+          opacity: 0,
+          ease: "power3.inOut"
+        }, "<0.05")
+        .from(nameHeadingRef.current, {
+          y: 400,
+          opacity: 0,
+          duration: 1,
+          ease: "power3.inOut"
+        }, "<0.05");
+    });
+
+    return () => {
+      ctx.revert();
+    }
   }, []);
 
   return (
@@ -140,6 +147,7 @@ export default function HomeDesktop() {
             alt="background"
             fill
             priority
+            loading="eager"
             className="object-cover scale-x-[-1]"
           />
           <div className="absolute inset-0 bg-white/0"></div>
