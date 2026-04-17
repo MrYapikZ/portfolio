@@ -242,7 +242,7 @@ export default function HomeDesktop({ names, altNames, socials, projects }: Home
           <div className="relative w-full h-full border-4 border-black grid grid-cols-12 grid-rows-6">
             {/* Nav */}
             <div ref={navRef} className="bg-white border-r-4 border-black row-start-1 row-end-7 flex items-center justify-center">
-              <p ref={navTextRef} className="font-sans font-bold text-[clamp(4.5rem,5vw,6rem)] [writing-mode:vertical-rl] [text-orientation:mixed] rotate-180">
+              <p ref={navTextRef} className="font-sans font-bold text-[clamp(4.5rem,5vw,5rem)] [writing-mode:vertical-rl] [text-orientation:mixed] rotate-180">
                 STUPID GENERALIST
               </p>
             </div>
