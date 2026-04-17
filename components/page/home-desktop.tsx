@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
 import { Card, CardHeader, CardTitle, CardDescription, CardAction } from "@/components/ui/card";
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import {
   Carousel,
   CarouselContent,
@@ -17,7 +18,7 @@ import { HomeProps } from "@/types/home";
 
 gsap.registerPlugin(SplitText);
 
-export default function HomeDesktop({ names, altNames, projects }: HomeProps) {
+export default function HomeDesktop({ names, altNames, socials, projects }: HomeProps) {
   useLockBodyScroll(true);
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -274,7 +275,7 @@ export default function HomeDesktop({ names, altNames, projects }: HomeProps) {
                                   href={project.link}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="hover:text-zinc-500 transition-colors duration-300"
+                                  className="hover:text-zinc-500 underline transition-colors duration-300"
                                 >
                                   {project.title}
                                 </a>
@@ -303,12 +304,39 @@ export default function HomeDesktop({ names, altNames, projects }: HomeProps) {
             {/* Contact */}
             <div ref={contactRef} className="relative bg-white border-l-4 border-black col-start-9 col-end-13 row-start-6 row-end-7 flex flex-col items-center justify-center">
               <a ref={emailRef} className="text-2xl" href="mailto:yapi@expiproject.com">yapi@expiproject.com</a>
-              <div ref={contactIconsRef} className="flex flex-row gap-8">
-                <InstagramLogoIcon size={32} />
-                <FacebookLogoIcon size={32} />
-                <DiscordLogoIcon size={32} />
-                <GithubLogoIcon size={32} />
-              </div>
+              <TooltipProvider delayDuration={0}>
+                <div ref={contactIconsRef} className="flex flex-row items-center justify-center gap-8">
+                  {socials.map((social, index) => {
+                    const Icon = social.icon;
+                    return (
+                      <Tooltip key={index}>
+                        {/* Pindahkan trigger agar membungkus tag <a> atau Ikon */}
+                        <TooltipTrigger asChild>
+                          <a
+                            href={social.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={social.name}
+                            className="group relative transition-all duration-300 hover:-translate-y-1"
+                          >
+                            <Icon
+                              size={32}
+                              className="text-black transition-colors group-hover:text-zinc-500"
+                            />
+                          </a>
+                        </TooltipTrigger>
+
+                        <TooltipContent
+                          side="bottom"
+                          className="bg-black text-white border-none rounded-none font-sans uppercase tracking-widest text-[10px]"
+                        >
+                          <p>{social.name}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    );
+                  })}
+                </div>
+              </TooltipProvider>
               <div ref={creditRef} className="absolute bottom-0 right-0 p-4 flex flex-row items-center gap-2 text-[clamp(0.675rem,5vw,0.875rem)] font-sans">
                 <p>
                   <span>Designed by </span>

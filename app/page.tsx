@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import HomeDesktop from "@/components/page/home-desktop";
 import HomeMobile from "@/components/page/home-mobile";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { GithubLogoIcon, XLogoIcon, DiscordLogoIcon, InstagramLogoIcon } from "@phosphor-icons/react";
 
 export default function Home() {
   const isMobile = useIsMobile();
@@ -18,6 +19,28 @@ export default function Home() {
     // "ロシアンワイフ",
     "甲板頭",
   ]
+  const socials = [
+    {
+      name: "GitHub",
+      url: "https://github.com/mryapikz",
+      icon: GithubLogoIcon 
+    },
+    {
+      name: "X",
+      url: "https://x.com/mryapikz",
+      icon: XLogoIcon,
+    },
+    {
+      name: "Instagram",
+      url: "https://www.instagram.com/mryapikz/",
+      icon: InstagramLogoIcon,
+    },
+    {
+      name: "Discord",
+      url: "https://discord.gg/UYM7f3gnNj",
+      icon: DiscordLogoIcon,
+    }
+  ];
   const projects = [
     {
       title: "Afterflash",
@@ -44,7 +67,7 @@ export default function Home() {
   }
   return (
     <>
-      {isMobile ? <HomeMobile names={names} altNames={altNames} projects={projects} /> : <HomeDesktop names={names} altNames={altNames} projects={projects} />}
+      {isMobile ? <HomeMobile names={names} altNames={altNames} socials={socials} projects={projects} /> : <HomeDesktop names={names} altNames={altNames} socials={socials} projects={projects} />}
     </>
   );
 }

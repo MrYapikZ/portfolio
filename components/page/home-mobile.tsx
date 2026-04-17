@@ -1,13 +1,13 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
 import { Card, CardDescription, CardHeader, CardTitle, CardAction } from "@/components/ui/card";
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
 import {
     Carousel,
     CarouselContent,
     CarouselItem
 } from "@/components/ui/carousel";
-import { DiscordLogoIcon, FacebookLogoIcon, GithubLogoIcon, InstagramLogoIcon } from "@phosphor-icons/react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { SplitText } from 'gsap/SplitText';
@@ -16,7 +16,7 @@ import { HomeProps } from "@/types/home";
 
 gsap.registerPlugin(SplitText);
 
-export default function HomeMobile({ names, altNames, projects }: HomeProps) {
+export default function HomeMobile({ names, altNames, socials, projects }: HomeProps) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const tl = useRef<GSAPTimeline | null>(null);
 
@@ -127,7 +127,7 @@ export default function HomeMobile({ names, altNames, projects }: HomeProps) {
                                                                     href={project.link}
                                                                     target="_blank"
                                                                     rel="noopener noreferrer"
-                                                                    className="hover:text-zinc-500 transition-colors duration-300"
+                                                                    className="hover:text-zinc-500 underline transition-colors duration-300"
                                                                 >
                                                                     {project.title}
                                                                 </a>
@@ -150,12 +150,39 @@ export default function HomeMobile({ names, altNames, projects }: HomeProps) {
                         {/* Contact */}
                         <div ref={contactRef} className="col-start-1 col-end-4 row-start-7 row-end-9 relative bg-white border-t-4 border-black flex flex-col items-center justify-center">
                             <a ref={emailRef} className="text-2xl" href="mailto:yapi@expiproject.com">yapi@expiproject.com</a>
-                            <div ref={contactIconsRef} className="flex flex-row gap-8">
-                                <InstagramLogoIcon size={32} />
-                                <FacebookLogoIcon size={32} />
-                                <DiscordLogoIcon size={32} />
-                                <GithubLogoIcon size={32} />
-                            </div>
+                            <TooltipProvider delayDuration={0}>
+                                <div ref={contactIconsRef} className="flex flex-row items-center justify-center gap-8">
+                                    {socials.map((social, index) => {
+                                        const Icon = social.icon;
+                                        return (
+                                            <Tooltip key={index}>
+                                                {/* Pindahkan trigger agar membungkus tag <a> atau Ikon */}
+                                                <TooltipTrigger asChild>
+                                                    <a
+                                                        href={social.url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        aria-label={social.name}
+                                                        className="group relative transition-all duration-300 hover:-translate-y-1"
+                                                    >
+                                                        <Icon
+                                                            size={32}
+                                                            className="text-black transition-colors group-hover:text-zinc-500"
+                                                        />
+                                                    </a>
+                                                </TooltipTrigger>
+
+                                                <TooltipContent
+                                                    side="bottom"
+                                                    className="bg-black text-white border-none rounded-none font-sans uppercase tracking-widest text-[10px]"
+                                                >
+                                                    <p>{social.name}</p>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        );
+                                    })}
+                                </div>
+                            </TooltipProvider>
                             <div ref={creditRef} className="absolute bottom-0 right-0 p-6 flex flex-row items-center gap-2 text-[clamp(0.675rem,5vw,0.875rem)] font-sans">
                                 <p className="flex flex-row gap-2">
                                     <span className="hidden sm:block">Designed by </span>
