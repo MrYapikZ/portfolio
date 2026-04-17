@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Carousel,
@@ -15,8 +15,16 @@ import Autoplay from "embla-carousel-autoplay"
 
 gsap.registerPlugin(SplitText);
 
-export default function HomeDesktop() {
+interface HomeDesktopProps {
+  names: string[];
+  altNames: string[];
+}
+
+export default function HomeDesktop({ names, altNames }: HomeDesktopProps) {
   useLockBodyScroll(true);
+  
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const tl = useRef<GSAPTimeline | null>(null);
 
   const navRef = useRef<HTMLDivElement>(null);
@@ -35,13 +43,15 @@ export default function HomeDesktop() {
   const artCreditRef = useRef<HTMLParagraphElement>(null);
 
   const carouselAutoplay = useRef(Autoplay({ delay: 3000, playOnInit: false }));
-
+  
   useEffect(() => {
     const japaneseNameSplit = new SplitText(japaneseNameRef.current, { type: "chars" });
     let ctx = gsap.context(() => {
+
       tl.current = gsap.timeline({
         onComplete: () => {
           carouselAutoplay.current?.play();
+          isLoading && setIsLoading(false);
         }
       })
         .from(navRef.current, {
@@ -120,7 +130,6 @@ export default function HomeDesktop() {
         }, "<0.5")
         .from(nameRef.current, {
           y: 400,
-          // x: 1600,
           duration: 1,
           opacity: 0,
           ease: "power3.inOut"
@@ -135,8 +144,89 @@ export default function HomeDesktop() {
 
     return () => {
       ctx.revert();
+      tl.current?.kill();
     }
   }, []);
+
+  useEffect(() => {
+    if (isLoading || names.length <= 1 || altNames.length <= 1) return;
+
+    const nameElement = nameHeadingRef.current;
+    const japaneseElement = japaneseNameRef.current;
+    if (!nameElement || !japaneseElement) return;
+
+    let japaneseNameSplit: SplitText | null = new SplitText(japaneseElement, { type: "chars" });
+    let switchTimeline: GSAPTimeline | null = null;
+    let cycleDelay: gsap.core.Tween | null = null;
+
+    const scheduleNextCycle = () => {
+      cycleDelay = gsap.delayedCall(5, runCycle);
+    };
+
+    const runCycle = () => {
+      switchTimeline?.kill();
+      gsap.killTweensOf(nameElement);
+      if (japaneseNameSplit) {
+        gsap.killTweensOf(japaneseNameSplit.chars);
+      }
+      const currentSplit = japaneseNameSplit;
+      if (!currentSplit) return;
+
+      switchTimeline = gsap.timeline({
+        onComplete: () => {
+          gsap.set(japaneseElement, { opacity: 0 });
+          japaneseNameSplit?.revert();
+          setCurrentIndex((prev) => (prev + 1) % names.length);
+
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              japaneseNameSplit = new SplitText(japaneseElement, { type: "chars" });
+
+              gsap.timeline({ onComplete: scheduleNextCycle })
+                .set(japaneseElement, { opacity: 1 }, 0)
+                .fromTo(
+                  nameElement,
+                  { y: 400, opacity: 0 },
+                  { y: 0, opacity: 1, duration: 1, ease: "power3.inOut" },
+                  0
+                )
+                .fromTo(
+                  japaneseNameSplit.chars,
+                  { y: 50, opacity: 0 },
+                  { y: 0, opacity: 1, duration: 0.5, stagger: 0.2, ease: "power3.inOut" },
+                  0
+                );
+            });
+          });
+        }
+      })
+        .to(nameElement, {
+          y: 400,
+          opacity: 0,
+          duration: 1,
+          ease: "power3.inOut"
+        }, 0)
+        .to(currentSplit.chars, {
+          duration: 0.5,
+          opacity: 0,
+          y: 50,
+          stagger: 0.2,
+          ease: "power3.inOut"
+        }, 0);
+    };
+
+    scheduleNextCycle();
+
+    return () => {
+      cycleDelay?.kill();
+      switchTimeline?.kill();
+      gsap.killTweensOf(nameElement);
+      if (japaneseNameSplit) {
+        gsap.killTweensOf(japaneseNameSplit.chars);
+        japaneseNameSplit.revert();
+      }
+    };
+  }, [isLoading, names.length]);
 
   return (
     <>
@@ -161,8 +251,8 @@ export default function HomeDesktop() {
 
             {/* Name */}
             <div ref={nameRef} className="relative bg-white border-l-4 border-t-4 border-black col-start-4 col-end-9 row-start-5 row-end-7 flex flex-col items-center justify-center gap-4">
-              <h1 ref={nameHeadingRef} className="font-heading text-[clamp(20rem,5vw,28rem)]">
-                russianwaifu
+              <h1 ref={nameHeadingRef} className="font-heading text-[clamp(20rem,20vw,32rem)]">
+                {names[currentIndex]}
               </h1>
             </div>
 
@@ -224,9 +314,9 @@ export default function HomeDesktop() {
             </div>
 
             {/* Japanese Name */}
-            <div className="col-start-2 col-end-4 row-start-3 row-end-7 flex flex-col items-center justify-end">
-              <h1 ref={japaneseNameRef} className="font-japanese text-[clamp(8rem,5vw,14rem)] text-white p-8 px-14 align-end [writing-mode:vertical-rl] [text-orientation:upright] [-webkit-text-stroke:4px_black]">
-                甲板頭
+            <div className="col-start-2 col-end-4 row-start-1 row-end-7 flex flex-col items-center justify-end">
+              <h1 ref={japaneseNameRef} className="font-japanese text-[clamp(7rem,5vw,14rem)] whitespace-nowrap align-end text-end tracking-[-1rem] text-white p-8 px-14 [writing-mode:vertical-rl] [text-orientation:upright] [-webkit-text-stroke:4px_black]">
+                {altNames[currentIndex]}
               </h1>
             </div>
           </div>

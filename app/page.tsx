@@ -7,6 +7,17 @@ import { useIsMobile } from "@/hooks/use-mobile";
 export default function Home() {
   const isMobile = useIsMobile();
   const [hasMounted, setHasMounted] = useState(false);
+  const names = [
+      "russianwaifu", 
+      // "dexkhead", 
+      // "mryapikz", 
+      // "yapi", 
+      // "yp"
+    ];
+    const altNames = [
+      // "ロシアンワイフ",
+      "甲板頭",
+    ]
 
   useEffect(() => {
     setHasMounted(true);
@@ -17,7 +28,7 @@ export default function Home() {
   }
   return (
     <>
-      {isMobile ? <HomeMobile /> : <HomeDesktop />}
+      {isMobile ? <HomeMobile names={names} altNames={altNames} /> : <HomeDesktop names={names} altNames={altNames} />}
     </>
   );
 }

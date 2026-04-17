@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import {
     Carousel,
@@ -14,7 +14,13 @@ import Autoplay from "embla-carousel-autoplay"
 
 gsap.registerPlugin(SplitText);
 
-export default function HomeMobile() {
+interface HomeMobileProps {
+  names: string[];
+  altNames: string[];
+}
+
+export default function HomeMobile({ names, altNames }: HomeMobileProps) {
+    const [currentIndex, setCurrentIndex] = useState(0);
     const tl = useRef<GSAPTimeline | null>(null);
 
     const navRef = useRef<HTMLDivElement>(null);
@@ -85,14 +91,14 @@ export default function HomeMobile() {
                         {/* Japanese Name */}
                         <div className="col-start-3 col-end-4 row-start-1 row-end-6 flex flex-col items-center justify-start">
                             <h1 ref={japaneseNameRef} className="font-japanese text-[clamp(8rem,5vw,14rem)] text-white p-8 px-14 align-start [writing-mode:vertical-rl] [text-orientation:upright] [-webkit-text-stroke:4px_black]">
-                                甲板頭
+                                {altNames[currentIndex]}
                             </h1>
                         </div>
 
                         {/* Name */}
                         <div ref={nameRef} className="col-start-1 col-end-4 row-start-7 row-end-9 relative bg-white border-t-4 border-black flex flex-col items-center justify-center gap-4">
                             <h1 ref={nameHeadingRef} className="font-heading text-[clamp(12rem,20vw,100rem)]">
-                                russianwaifu
+                                {names[currentIndex]}
                             </h1>
                         </div>
                     </div>
