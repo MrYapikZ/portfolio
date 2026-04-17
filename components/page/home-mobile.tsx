@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardDescription, CardHeader, CardTitle, CardAction } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
     Carousel,
     CarouselContent,
@@ -10,16 +11,12 @@ import { DiscordLogoIcon, FacebookLogoIcon, GithubLogoIcon, InstagramLogoIcon } 
 import Image from "next/image";
 import { gsap } from "gsap";
 import { SplitText } from 'gsap/SplitText';
-import Autoplay from "embla-carousel-autoplay"
+import Autoplay from "embla-carousel-autoplay";
+import { HomeProps } from "@/types/home";
 
 gsap.registerPlugin(SplitText);
 
-interface HomeMobileProps {
-  names: string[];
-  altNames: string[];
-}
-
-export default function HomeMobile({ names, altNames }: HomeMobileProps) {
+export default function HomeMobile({ names, altNames, projects }: HomeProps) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const tl = useRef<GSAPTimeline | null>(null);
 
@@ -43,30 +40,30 @@ export default function HomeMobile({ names, altNames }: HomeMobileProps) {
     useEffect(() => {
         const japaneseNameSplit = new SplitText(japaneseNameRef.current, { type: "chars" });
         let ctx = gsap.context(() => {
-        tl.current = gsap.timeline({
-            onComplete: () => {
-                carouselAutoplay.current.play();
-            }
-        })
-            .from(japaneseNameSplit.chars, {
-                duration: 1,
-                opacity: 0,
-                y: 50,
-                stagger: 0.2,
-                ease: "power3.inOut"
-            }, 1)
-            .from(nameRef.current, {
-                y: 400,
-                duration: 1,
-                opacity: 0,
-                ease: "power3.inOut"
-            }, "<0.05")
-            .from(nameHeadingRef.current, {
-                y: 400,
-                opacity: 0,
-                duration: 1,
-                ease: "power3.inOut"
-            }, "<0.05");
+            tl.current = gsap.timeline({
+                onComplete: () => {
+                    carouselAutoplay.current.play();
+                }
+            })
+                .from(japaneseNameSplit.chars, {
+                    duration: 1,
+                    opacity: 0,
+                    y: 50,
+                    stagger: 0.2,
+                    ease: "power3.inOut"
+                }, 1)
+                .from(nameRef.current, {
+                    y: 400,
+                    duration: 1,
+                    opacity: 0,
+                    ease: "power3.inOut"
+                }, "<0.05")
+                .from(nameHeadingRef.current, {
+                    y: 400,
+                    opacity: 0,
+                    duration: 1,
+                    ease: "power3.inOut"
+                }, "<0.05");
         });
 
         return () => {
@@ -113,19 +110,35 @@ export default function HomeMobile({ names, altNames }: HomeMobileProps) {
                         <div ref={projectsRef} className="col-start-1 col-end-4 row-start-4 row-end-7 bg-white border-t-4 border-black flex flex-col items-center justify-center p-4">
                             <Carousel ref={carouselRef} plugins={[carouselAutoplay.current]} className="h-full">
                                 <CarouselContent className="h-full">
-                                    {Array.from({ length: 5 }).map((_, index) => (
+                                    {projects.map((project, index) => (
                                         <CarouselItem key={index} className="h-full">
                                             <div className="p-1 h-full">
                                                 <Card className="relative h-full">
                                                     {/* <div className="absolute inset-0 z-30 aspect-video bg-black/35" /> */}
                                                     <img
-                                                        src='/background/wallhaven-1qd9o1.png'
-                                                        alt={`Project ${index + 1}`}
-
+                                                        src={project.image}
+                                                        alt={project.title}
                                                         className="relative z-20 aspect-video h-10/12 w-full object-cover brightness-80 dark:brightness-40"
                                                     />
                                                     <CardHeader className="h-24">
-                                                        <CardTitle className="font-sans">Project {index + 1}</CardTitle>
+                                                        <CardTitle className="font-sans text-xl leading-none">
+                                                            {project.link ? (
+                                                                <a
+                                                                    href={project.link}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="hover:text-zinc-500 transition-colors duration-300"
+                                                                >
+                                                                    {project.title}
+                                                                </a>
+                                                            ) : (
+                                                                project.title
+                                                            )}
+                                                        </CardTitle>
+                                                        <CardAction>
+                                                            <Badge variant="outline">{project.category}</Badge>
+                                                        </CardAction>
+                                                        <CardDescription className="font-sans">{project.description}</CardDescription>
                                                     </CardHeader>
                                                 </Card>
                                             </div>

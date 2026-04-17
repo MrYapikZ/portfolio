@@ -1,28 +1,25 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription, CardAction } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem
 } from "@/components/ui/carousel";
+import { Badge } from "@/components/ui/badge";
 import { DiscordLogoIcon, FacebookLogoIcon, GithubLogoIcon, InstagramLogoIcon } from "@phosphor-icons/react";
 import Image from "next/image";
 import { useLockBodyScroll } from 'react-use';
 import { gsap } from "gsap";
 import { SplitText } from 'gsap/SplitText';
-import Autoplay from "embla-carousel-autoplay"
+import Autoplay from "embla-carousel-autoplay";
+import { HomeProps } from "@/types/home";
 
 gsap.registerPlugin(SplitText);
 
-interface HomeDesktopProps {
-  names: string[];
-  altNames: string[];
-}
-
-export default function HomeDesktop({ names, altNames }: HomeDesktopProps) {
+export default function HomeDesktop({ names, altNames, projects }: HomeProps) {
   useLockBodyScroll(true);
-  
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const tl = useRef<GSAPTimeline | null>(null);
@@ -43,7 +40,7 @@ export default function HomeDesktop({ names, altNames }: HomeDesktopProps) {
   const artCreditRef = useRef<HTMLParagraphElement>(null);
 
   const carouselAutoplay = useRef(Autoplay({ delay: 3000, playOnInit: false }));
-  
+
   useEffect(() => {
     const japaneseNameSplit = new SplitText(japaneseNameRef.current, { type: "chars" });
     let ctx = gsap.context(() => {
@@ -260,30 +257,41 @@ export default function HomeDesktop({ names, altNames }: HomeDesktopProps) {
             <div ref={projectsRef} className="bg-white border-b-4 border-l-4 border-black col-start-9 col-end-13 row-start-1 row-end-3 flex flex-col items-center justify-center p-4">
               <Carousel ref={carouselRef} plugins={[carouselAutoplay.current]} className="h-full">
                 <CarouselContent className="h-full">
-                  {Array.from({ length: 5 }).map((_, index) => (
+                  {projects.map((project, index) => (
                     <CarouselItem key={index} className="h-full">
                       <div className="p-1 h-full">
                         <Card className="relative h-full">
                           {/* <div className="absolute inset-0 z-30 aspect-video bg-black/35" /> */}
                           <img
-                            src='/background/wallhaven-1qd9o1.png'
-                            alt={`Project ${index + 1}`}
-
+                            src={project.image}
+                            alt={project.title}
                             className="relative z-20 aspect-video h-10/12 w-full object-cover brightness-80 dark:brightness-40"
                           />
                           <CardHeader className="h-24">
-                            <CardTitle className="font-sans">Project {index + 1}</CardTitle>
+                            <CardTitle className="font-sans text-xl leading-none">
+                              {project.link ? (
+                                <a
+                                  href={project.link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="hover:text-zinc-500 transition-colors duration-300"
+                                >
+                                  {project.title}
+                                </a>
+                              ) : (
+                                project.title
+                              )}
+                            </CardTitle>
+                            <CardAction>
+                              <Badge variant="outline">{project.category}</Badge>
+                            </CardAction>
+                            <CardDescription className="font-sans">{project.description}</CardDescription>
                           </CardHeader>
                         </Card>
                       </div>
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-
-                {/* <div className="flex justify-between mt-2">
-                  <CarouselPrevious className="static translate-y-0" />
-                  <CarouselNext className="static translate-y-0" />
-                </div> */}
               </Carousel>
             </div>
             {/* Bio */}
