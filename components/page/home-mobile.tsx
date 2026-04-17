@@ -70,7 +70,7 @@ export default function HomeMobile() {
 
     return (
         <>
-            <section id="home-mobile" className="p-4 h-screen w-screen overflow-hidden bg-white">
+            <section id="home-mobile" className="p-4 min-h-screen w-full overflow-x-hidden bg-white">
                 <div className="relative w-full h-full overflow-x-hidden border-4 border-black">
                     <Image
                         src="/background/wallhaven-9dq9wk.png"
@@ -78,10 +78,10 @@ export default function HomeMobile() {
                         fill
                         priority
                         loading="eager"
-                        className="object-cover scale-x-[-1]"
+                        className="object-cover scale-x-[-1] max-h-screen"
                     />
                     <div className="absolute inset-0 bg-white/0"></div>
-                    <div className="relative w-full h-full grid grid-cols-3 grid-rows-8">
+                    <div className="relative w-full h-screen grid grid-cols-3 grid-rows-8">
                         {/* Japanese Name */}
                         <div className="col-start-3 col-end-4 row-start-1 row-end-6 flex flex-col items-center justify-start">
                             <h1 ref={japaneseNameRef} className="font-japanese text-[clamp(8rem,5vw,14rem)] text-white p-8 px-14 align-start [writing-mode:vertical-rl] [text-orientation:upright] [-webkit-text-stroke:4px_black]">
@@ -96,7 +96,7 @@ export default function HomeMobile() {
                             </h1>
                         </div>
                     </div>
-                    <div className="relative w-full h-full grid grid-cols-3 grid-rows-8">
+                    <div className="relative w-full h-screen grid grid-cols-3 grid-rows-8">
                         {/* Bio */}
                         <div ref={bioRef} className="col-start-1 col-end-4 row-start-1 row-end-4 bg-white border-t-4 border-black flex flex-col items-center justify-center">
                             <p ref={bioParagraphRef} className="p-4 font-sans text-xl">

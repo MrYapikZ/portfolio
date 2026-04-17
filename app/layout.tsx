@@ -4,6 +4,7 @@ import localFont from "next/font/local"
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import CustomCursor from "@/components/custom-cursor";
+import SmoothScroll from "@/components/SmoothScroll";
 
 const nexusbold = localFont({ src: "./fonts/Nexusbold.ttf", variable: '--font-nexus' });
 
@@ -36,11 +37,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-mono", jetbrainsMono.variable, nexusbold.variable, buildingstracks.variable, urbanist.variable)}
+      className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-mono", jetbrainsMono.variable, nexusbold.variable, buildingstracks.variable, urbanist.variable, "no-scrollbar", "select-none")}
     >
       <body className="min-h-full flex flex-col">
         <CustomCursor />
-        {children}
+        <SmoothScroll>
+          {children}
+        </SmoothScroll>
         </body>
     </html>
   );
